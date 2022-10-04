@@ -1,0 +1,18 @@
+const express = require('express');
+const { engine } = require('express-handlebars');
+
+require('dotenv').config();
+
+const app = express();
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', './views');
+
+app.get('/', (req, res) => {
+    res.render('home');
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+})
