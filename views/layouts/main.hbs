@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <div class="min-h-screen">
+    <div class="min-h-screen flex flex-col">
         <div class="flex h-12 px-10 border justify-between items-center">
             <div class="flex gap-10">
                 <a class="hover:cursor-pointer font-bold text-2xl">
@@ -17,11 +17,12 @@
                 </a>
             </div>
             <div class="flex gap-10">
-                <a class="hover:cursor-pointer text-xl">Home</a>
-                <a class="hover:cursor-pointer text-xl">Login</a>
+                <a href="/" class="hover:cursor-pointer text-xl">Home</a>
+                <a href="/login" class="hover:cursor-pointer text-xl">Login</a>
             </div>
         </div>
-        <div>
+        
+        <div class="flex flex-grow">
             {{{body}}}
         </div>
     </div>
