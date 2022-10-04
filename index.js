@@ -1,5 +1,6 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
+const session = require('express-session');
 
 require('dotenv').config();
 
@@ -7,6 +8,14 @@ const app = express();
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', './views');
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    }
+}));
 
 app.get('/', (req, res) => {
     res.render('home');
