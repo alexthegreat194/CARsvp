@@ -9,6 +9,9 @@ app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -18,16 +21,29 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
+
+const auth = require('./routes/auth');
+
+app.use('/', auth);
+
 app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
-app.get('/signup', (req, res) => {
-    res.render('signup');
+
+app.get('/dashboard', (req, res) => {
+    
+    if (req.session.user) {
+        res.render('dashboard', {user: req.session.user});
+    } else {
+        res.redirect('/login');
+    }
+
 });
 
 const port = process.env.PORT || 3000;
