@@ -11,6 +11,7 @@ app.set('views', './views');
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
+    resave: false,
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
