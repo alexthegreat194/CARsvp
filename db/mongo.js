@@ -9,5 +9,6 @@ const client = new MongoClient(uri);
 const db = client.db("carsvp");
 
 const users = db.collection("users");
+const cars = db.collection("cars");
 
-module.exports = { users };
+module.exports = { users, cars };

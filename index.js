@@ -29,24 +29,16 @@ app.use((req, res, next) => {
 });
 
 const auth = require('./routes/auth');
+const dashboard = require('./routes/dashboard');
 
 app.use('/', auth);
+app.use('/', dashboard);
 
 app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/dashboard', (req, res) => {
-    
-    console.log(req.session);
 
-    if (req.session.user) {
-        res.render('dashboard', {user: req.session.user});
-    } else {
-        res.redirect('/login');
-    }
-
-});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
