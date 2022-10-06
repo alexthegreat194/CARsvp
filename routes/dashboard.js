@@ -22,24 +22,24 @@ router.get('/dashboard', async (req, res) => {
     let eventsFoundWithCars = await Promise.all(eventsFound.map(async (event) => {
         
         const rsvps = await eventAttending.find({eventId: event._id.toString()}).toArray();
-        console.log(rsvps);
+        // console.log(rsvps);
         
         const peopleIds = rsvps.map(rsvp => rsvp.userId);
-        console.log(peopleIds);
+        // console.log(peopleIds);
         const people = await Promise.all(peopleIds.map(async (id) => {
             const person = await users.findOne({_id: ObjectId(id)});
             return person;
         }));
-        console.log(people);
+        // console.log(people);
         
         let carsFound = [];
 
         for (let i = 0; i < people.length; i++) {
-            console.log("individual person:", people[i]);
+            // console.log("individual person:", people[i]);
             const personCars = await cars.find({
                 ownerId: people[i]._id.toString()
             }).toArray();
-            console.log("personCars:", personCars);
+            // console.log("personCars:", personCars);
             carsFound = [...carsFound, ...personCars];
         }
         // console.log("found Cars", carsFound);

@@ -1,108 +1,136 @@
 {{!-- cars --}}
 
-<div>
-    <h1 class="text-3xl font-bold">My Cars</h1>
-    
-    <table class="table-auto">
-        <thead>
-            <th>Name</th>
-            <th>Seats</th>
-            <th>-</th>
-        </thead>
-        <tbody>
-            {{#each cars}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{seats}}</td>
-                <td>
-                    <form action="/cars/{{_id}}/delete" method="post">
-                        <button class="rounded-xl p-2 px-3 text-white bg-rose-600" type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {{/each}}
-
-            <form action="/cars/new" method="post">
+<div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
+    <div>
+        <h1 class="text-3xl font-bold">My Cars</h1>
+        
+        <table class=" rounded-xl table-auto p-5">
+            <thead>
+                <th>Name</th>
+                <th>Seats</th>
+                <th>-</th>
+            </thead>
+            <tbody>
+                {{#each cars}}
                 <tr>
+                    <td>{{name}}</td>
+                    <td>{{seats}}</td>
                     <td>
-                        <input class="p-2 border rounded" type="text" name="name" id="name" required>
-                    </td>
-                    <td>
-                        <input class="p-2 border rounded" type="number" name="seats" id="seats" required>
-                    </td>
-                    <td>
-                        <button class="rounded-xl p-2 px-3 text-white bg-blue-600" type="submit">Add</button>
+                        <form action="/cars/{{_id}}/delete" method="post">
+                            <button class="rounded-xl p-2 px-3 text-white bg-rose-600" type="submit">Delete</button>
+                        </form>
                     </td>
                 </tr>
-            </form>
-        </tbody>
-    </table>
+                {{/each}}
+    
+                <form action="/cars/new" method="post">
+                    <tr>
+                        <td>
+                            <input class="p-1 border rounded" type="text" name="name" id="name" required>
+                        </td>
+                        <td>
+                            <input class="p-1 border rounded" type="number" name="seats" id="seats" required>
+                        </td>
+                        <td>
+                            <button class="rounded-xl p-2 px-3 text-white bg-blue-600" type="submit">Add</button>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
     
     <div>
-        <h1 class="text-2xl">Your Events</h1>
+        <h1 class="text-5xl font-bold">Your Events</h1>
         <br>
-        <div>
+        <div >
             {{#each events}}
-            <div>
-                <h2>{{title}}</h2>
-                <p>{{description}}</p>
-                <p>{{date}}</p>
-                <p>{{_id}}</p>
-                <p>join link: localhost:3000/events/{{_id}}/join</p>
+            <div class="flex flex-col border p-5 rounded-xl shadow ">
+                <h2 class="text-3xl font-bold">{{title}}</h2>
+                <p class="text-md font-light">{{description}}</p>
+                <p class="text-xs font-thin">{{date}}</p>
 
-                <p>status: {{peopleAmount}}/{{seats}}</p>
-
-                <a href="/events/{{_id}}/delete" class="text-red-500">Delete</a>
+                <p>Seats left: {{peopleAmount}}/{{seats}}</p>
+                
+                <div class="flex flex-row gap-5 ">
+                    <p class="text-sm text-black/50">id: {{_id}}</p>
+                    <button class="text-sm text-black/50 font-bold focus:border hover:underline" id="copy-button-{{_id}}">Copy Invite Link</button>
+                    
+                    <script>
+                        document.getElementById("copy-button-{{_id}}").addEventListener("click", function() {
+                            const link = window.location.origin + "/events/{{_id}}/join";
+                            console.log("copied link:", link);
+                            navigator.clipboard.writeText(link);
+                        });
+                    </script>
+                </div>
+                <br>
+                <a href="/events/{{_id}}/delete" class="rounded-xl p-2 px-3 text-white bg-rose-600 w-min">Delete</a>
             </div>
             {{/each}}
         </div>
         <br>
-        <form action="/events/new" method="post">
+        <form action="/events/new" method="post"
+            class="flex flex-col gap-2 shadow-xl p-10 rounded-xl">
             <div>
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" required>
+                <h1 class="text-3xl font-bold">New Event</h1>
             </div>
-            <div>
-                <label for="description">Description</label>
-                <input type="text" name="description" id="description" required>
+            <div class="flex flex-col gap-2">
+                <label class="font-light" for="title">Title</label>
+                <input class="p-2 border rounded" type="text" name="title" id="title" required>
             </div>
-            <div>
-                <label for="date">Date</label>
-                <input type="datetime-local" name="date" id="date" required>
+            <div class="flex flex-col gap-2">
+                <label class="font-light" for="description">Description</label>
+                <input class="p-2 border rounded" type="text" name="description" id="description" required>
             </div>
-            <button type="submit">Create Event</button>
+            <div class="flex flex-col gap-2">
+                <label class="font-light" for="date">Date</label>
+                <input class="p-2 border rounded" type="datetime-local" name="date" id="date" required>
+            </div>
+            <button class="rounded-lg p-2 px-3 text-white bg-rose-600 shadow" type="submit">Create Event</button>
         </form>
     </div>
 
+    <div>
+        <h1 class="text-3xl font-bold">Events Attending</h1>
+        <br>
+        <form action="/events/code/join" method="post">
+            <input class="p-2 border rounded" type="text" name="code" id="code" placeholder="Event Code" required>
+            <button class="rounded-lg p-2 px-3 text-white bg-blue-600" type="submit">Join Event</button>
+        </form>
+        <br>
+        <div>
+            {{#each attending}}
+            <div class="flex flex-col border p-5 rounded-xl shadow ">
+                <h2 class="text-3xl font-bold">{{title}}</h2>
+                <p class="text-md font-light">{{description}}</p>
+                <p class="text-xs font-thin">{{date}}</p>
+      
+                <p>Seats left: {{peopleAmount}}/{{seats}}</p>
+
+                <div class="flex flex-row gap-5 ">
+                    <p class="text-sm text-black/50">id: {{_id}}</p>
+                    <button class="text-sm text-black/50 font-bold focus:border hover:underline" id="copy-button-attending-{{_id}}">Copy Invite Link</button>
+                    
+                    <script>
+                        document.getElementById("copy-button-attending-{{_id}}").addEventListener("click", function() {
+                            const link = window.location.origin + "/events/{{_id}}/join";
+                            console.log("copied link:", link);
+                            navigator.clipboard.writeText(link);
+                        });
+                    </script>
+                </div>
+
+                <p>{{peopleAmount}}</p>
+                {{#each people}}
+                    <p>{{name}}</p>
+                {{/each}}
+                <br>
+                <a href="/events/{{_id}}/leave" class="rounded-xl p-2 px-3 text-white bg-rose-600 w-min">Leave</a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
 </div>
 
-<div class="border">
-    <h1 class="text-3xl font-bold">Events Attending</h1>
-    <br>
-    <form action="/event/code/join" method="post">
-        <div>
-            <label for="code">Event Code</label>
-            <input type="text" name="code" id="code" required>
-        </div>
-        <button type="submit">Join Event</button>
-    </form>
-    <br>
-    <div>
-        {{#each attending}}
-        <div>
-            <h2>{{title}}</h2>
-            <p>{{description}}</p>
-            <p>{{date}}</p>
-            <p>{{_id}}</p>
-            <p>join link: localhost:3000/events/{{_id}}/join</p>
-            <p>seats: {{seats}}</p>
-            <p>{{peopleAmount}}</p>
-            <p>status: {{peopleAmount}}/{{seats}}</p>
-            {{#each people}}
-                <p>{{name}}</p>
-            {{/each}}
-            <a href="/events/{{_id}}/leave" class="text-red-500">Leave</a>
-        </div>
-        {{/each}}
-    </div>
-</div>
