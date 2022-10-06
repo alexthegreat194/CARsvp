@@ -11,5 +11,6 @@ const db = client.db("carsvp");
 const users = db.collection("users");
 const cars = db.collection("cars");
 const events = db.collection("events");
+const eventAttending = db.collection("eventAttending");
 
-module.exports = { users, cars, events };
+module.exports = { users, cars, events, eventAttending };
