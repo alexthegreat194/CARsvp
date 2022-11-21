@@ -1,6 +1,7 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const session = require('express-session');
+const expressSanitizer = require('express-sanitizer');
 
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ app.set('views', './views');
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(expressSanitizer());
 
 app.use((req, res, next) => {
     res.locals.user = req.session.user;

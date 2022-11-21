@@ -13,4 +13,11 @@ const cars = db.collection("cars");
 const events = db.collection("events");
 const eventAttending = db.collection("eventAttending");
 
+// test the connection
+async function main() {
+    await client.connect();
+    console.log("Connected to MongoDB");
+    await client.close();
+}
+
 module.exports = { users, cars, events, eventAttending };

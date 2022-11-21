@@ -125,8 +125,11 @@ router.get('/dashboard', async (req, res) => {
 
 router.post('/cars/new', async (req, res) => {
     const { name, seats } = req.body;
+
+    const sanitizedName = req.sanitize(name);
+
     const car = await cars.insertOne({
-        name,
+        sanitizedName,
         seats,
         ownerId: req.session.user._id
     });
